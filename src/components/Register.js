@@ -1,12 +1,32 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
+import Button from 'react-validation/build/button';
+import validator from 'validator';
 import axios from 'axios';
+
+
+const required = (value) => {
+  if (!value.toString().trim().length) {
+    return(
+        <span className="error">Required</span>
+    );
+  }
+};
+
+const email = (value) => {
+  if (!validator.isEmail(value)) {
+    return (
+      <span className="error">{value} is not a valid email.</span>);
+  }
+};
 
 class Register extends Component {
     constructor(){
         super();
         this.state = {
-            email:'',
+            email_id:'',
             name:'',
             selectedFile: '',
             error: false,
@@ -38,8 +58,10 @@ class Register extends Component {
     }
     registerUser(){
         let formData = new FormData();
-        formData.append('file', this.state.selectedFile);
-        console.log(formData);
+        formData.append('profile_photo', this.state.selectedFile);
+        formData.append('name', this.state.name);
+        formData.append('email_id', this.state.email_id);
+        
         axios.post('http://10.0.100.226:3001/users',  formData )
         .then(res => {
             if(res.data.status_code == '200') {
@@ -63,28 +85,28 @@ class Register extends Component {
                     </div>
                     <div className="login-box-body">
                         <h3> <p className="login-box-msg">Sign Up</p> </h3>
-                        <form  id="register" encType="multipart/form-data" method="post">
+                        <Form  id="register" encType="multipart/form-data" method="post">
                             <div className="form-group has-feedback">
                                 <label>Email</label>
-                                <input type="email" name="email" className="form-control" placeholder="Email*" value={this.state.email} onChange={this.inputChangeHandler} required/>
+                                <Input type="email" name="email_id" className="form-control" placeholder="Email*" value={this.state.email_id} onChange={this.inputChangeHandler} validations={[required, email]}/>
                                 <span className="glyphicon glyphicon-envelope form-control-feedback"></span>
                             </div>
                             <div className="form-group has-feedback">
                                 <label>Full Name</label>
-                                <input type="text" name="name" className="form-control" placeholder="Full Name*" value={this.state.name} onChange={this.inputChangeHandler} required/>
+                                <Input type="text" name="name" className="form-control" placeholder="Full Name*" value={this.state.name} onChange={this.inputChangeHandler} validations={[required]} />
                                 <span className="glyphicon glyphicon-text form-control-feedback"></span>
                             </div>
                             <div className="form-group has-feedback">
                                 <label>Upload Photo</label>
-                                <input type="file" name="contact_pic" className="form-control file_field" onChange={this.onFileChangeHandler}/>
+                                <Input type="file" name="contact_pic" className="form-control file_field" onChange={this.onFileChangeHandler} validations={[required]} />
                                 <span className="glyphicon glyphicon-upload form-control-feedback"></span>
                             </div>
                             <div className="row">
                                 <div className="col-xs-4 col-xs-offset-8">
-                                    <button type="button" className="btn btn-primary btn-block btn-flat" onClick={this.registerUser}>Register</button>
+                                    <Button type="button" className="btn btn-primary btn-block btn-flat" onClick={this.registerUser}>Register</Button>
                                 </div>
                             </div>
-                        </form>
+                        </Form>
                     </div>
                 </div>
             </div>

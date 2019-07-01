@@ -1,6 +1,25 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
+import Button from 'react-validation/build/button';
+import validator from 'validator';
 import axios from 'axios';
+
+const required = (value) => {
+  if (!value.toString().trim().length) {
+    return(
+        <span className="error">Required</span>
+    );
+  }
+};
+
+const email = (value) => {
+  if (!validator.isEmail(value)) {
+    return (
+      <span className="error">{value} is not a valid email.</span>);
+  }
+};
 
 class Login extends Component {
     constructor(){
@@ -25,7 +44,8 @@ class Login extends Component {
         });
     }
     
-    checkLoginCredentials(){
+    checkLoginCredentials(e){
+        e.preventDefault();
         const login_details = {
             email_id: this.state.email,
             password: this.state.password
@@ -35,6 +55,7 @@ class Login extends Component {
         .then(res => {
             if(res.data.status_code == '200') {
                 localStorage.setItem('token',res.data.token);
+                localStorage.setItem('loggedin',true);
                 this.setState({
                     redirect: true
                 });
@@ -62,29 +83,30 @@ class Login extends Component {
                     </div>
                     <div className="login-box-body">
                         <h3> <p className="login-box-msg">Sign in</p> </h3>
-                        <form  id="login" method="post">
+                        <Form  id="login" method="post">
                             {(this.state.error) && <p className="error">Invalid Credentials</p>}
                             <div className="form-group has-feedback">
                                 <label>Email</label>
-                                <input type="email" name="email" className="form-control" value={this.state.email} onChange={this.inputChangeHandler} placeholder="Email*" required/>
+                                <Input type="email" name="email" className="form-control" value={this.state.email} onChange={this.inputChangeHandler} placeholder="Email*" validations={[required, email]}/>
                                 <span className="glyphicon glyphicon-envelope form-control-feedback"></span>
                             </div>
                             <div className="form-group has-feedback">
                                 <label>Password</label>
-                                <input type="password" name="password" className="form-control" value={this.state.password} onChange={this.inputChangeHandler} placeholder="Password*" required/>
+                                <Input type="password" name="password" className="form-control" value={this.state.password} onChange={this.inputChangeHandler} placeholder="Password*" validations={[required]} />
                                 <span className="glyphicon glyphicon-lock form-control-feedback"></span>
                             </div>
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <button type="submit" className="btn btn-primary btn-block btn-flat" onClick={this.checkLoginCredentials}>Sign In</button>
+                                    <Button type="button" className="btn btn-primary btn-block btn-flat" onClick={this.checkLoginCredentials}>Sign In</Button>
                                     <label>Don't have account?</label><Link className="m-l-5" to="/register">Register</Link>
                                 </div>
                             </div>
-                        </form>
+                        </Form>
                     </div>
                 </div>
             </div>
         );
     }
 }
+
 export default Login;

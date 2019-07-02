@@ -68,11 +68,15 @@ class Register extends Component {
                 this.setState({
                     redirect: true
                 });
-            }else {
+            } else {
                 this.setState({
                     error: true
                 });
             }
+        }).catch(err => {
+            this.setState({
+                error: true
+            });
         })
     }
     render() {
@@ -86,6 +90,7 @@ class Register extends Component {
                     <div className="login-box-body">
                         <h3> <p className="login-box-msg">Sign Up</p> </h3>
                         <Form  id="register" encType="multipart/form-data" method="post">
+                            {(this.state.error) && <p className="error">Something went wrong.</p>}
                             <div className="form-group has-feedback">
                                 <label>Email</label>
                                 <Input type="email" name="email_id" className="form-control" placeholder="Email*" value={this.state.email_id} onChange={this.inputChangeHandler} validations={[required, email]}/>

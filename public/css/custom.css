@@ -77,14 +77,27 @@ ol.progtrckr li.progtrckr-todo:before {
     font-size: 1.5em;
     bottom: -1.6em;
 }
-
 .m-l-5{
     margin-left:5px;
 }
 .file_field{
     height:auto;
 }
-
 .login-box-body{
     background-color:#e3e3e3;
+}
+.static-box-size{
+    height: 170px;
+    overflow-y: auto;
+}
+.add_fb_content{
+    padding-left:270px;
+}
+.img-user{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+.user_name{
+    color: #337ab7;
 }

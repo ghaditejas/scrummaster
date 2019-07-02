@@ -44,8 +44,7 @@ class Login extends Component {
         });
     }
     
-    checkLoginCredentials(e){
-        e.preventDefault();
+    checkLoginCredentials(){
         const login_details = {
             email_id: this.state.email,
             password: this.state.password
@@ -53,17 +52,22 @@ class Login extends Component {
         
         axios.post('http://10.0.100.226:3001/login',  login_details )
         .then(res => {
-            if(res.data.status_code == '200') {
+            console.log(res);
+            if(res.data.status_code === 200) {
                 localStorage.setItem('token',res.data.token);
                 localStorage.setItem('loggedin',true);
                 this.setState({
                     redirect: true
                 });
-            }else {
+            } else {
                 this.setState({
                     error: true
                 });
             }
+        }).catch(err => {
+            this.setState({
+                error: true
+            });
         })
     }
     

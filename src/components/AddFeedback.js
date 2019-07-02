@@ -7,6 +7,7 @@ class AddFeedback extends Component {
         this.state = {
             receivers_list: []
         }
+        this.submitFeedback = this.submitFeedback.bind(this);
     }
     componentWillMount(){
         axios.get('http://10.0.100.226:3001/receiver', { headers: { Authorization: localStorage.getItem('token') } })
@@ -20,6 +21,22 @@ class AddFeedback extends Component {
             console.log('error ' + error);
         });
     }
+    submitFeedback(e){
+        var index = e.target.getAttribute('attr');
+        var feedbackValue = document.getElementById('feedback'+index).value;
+        var data = {
+            feedback: feedbackValue
+        }
+        console.log(data);
+        axios.post('http://10.0.100.226:3001/feedbacksave', { headers: { Authorization: localStorage.getItem('token') }, data })
+        .then(res => {
+            console.log(res.data.list);
+        })
+        .catch((error) => {
+            console.log('error ' + error);
+        });
+    }
+
     render() {
         return(
             <div className="col-sm-12">
@@ -41,7 +58,7 @@ class AddFeedback extends Component {
                                                 <label>Feedback*</label>
                                                 <textarea className="form-control" name={"feedback"+i} id={"feedback"+i} type="text"></textarea>
                                             </div>
-                                            <button type="button" className="btn btn-primary">Submit</button>
+                                            <button type="button" className="btn btn-primary" attr={i} onClick={this.submitFeedback}>Submit</button>
                                         </div>
                                     </form>
                                 ))}

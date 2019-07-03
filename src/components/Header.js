@@ -34,7 +34,7 @@ class Header extends Component {
         return(
             <div>
             <header className="main-header">
-                <a href="#" className="logo">
+                <a href="javascript:void(0)" className="logo">
                     <span className="logo-lg"><b>Scrum</b>Master</span>
                 </a>
                 <nav className="navbar navbar-static-top">

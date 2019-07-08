@@ -62,7 +62,7 @@ class Register extends Component {
         formData.append('name', this.state.name);
         formData.append('email_id', this.state.emailId);
         
-        axios.post('http://10.0.100.226:3001/users',  formData )
+        axios.post(process.env.REACT_APP_API_KEY+'/users',  formData )
         .then(res => {
             if(res.data.status_code == '200') {
                 this.setState({

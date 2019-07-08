@@ -16,7 +16,7 @@ class Header extends Component {
     componentWillMount(){   
 
         if(localStorage.getItem('loggedin') !== null){
-            axios.get('http://10.0.100.226:3001/dashboard', { headers: { Authorization: localStorage.getItem('token') } }).then(res => {
+            axios.get(process.env.REACT_APP_API_KEY+'/dashboard', { headers: { Authorization: localStorage.getItem('token') } }).then(res => {
                 this.setState({
                     userDetails: res.data.data[0]
                 });
@@ -54,7 +54,7 @@ class Header extends Component {
                 <section className="sidebar">
                     <div className="user-panel">
                         <div className="pull-left image">
-                            <img src={"http://10.0.100.226:3001/"+this.state.userDetails.profile_photo} className="img-circle" alt="Image" />
+                            <img src={(this.state.userDetails.profile_photo) ? process.env.REACT_APP_API_KEY+"/"+this.state.userDetails.profile_photo : ''} className="img-circle" alt="Image" />
                         </div>
                         <div className="pull-left info">
                             <p>{this.state.userDetails.name}</p>

@@ -49,8 +49,8 @@ class Login extends Component {
             email_id: this.state.email,
             password: this.state.password
         };
-        
-        axios.post('http://10.0.100.226:3001/login',  login_details )
+
+        axios.post(process.env.REACT_APP_API_KEY+'/login',  login_details )
         .then(res => {
             if(res.data.status_code === 200) {
                 localStorage.setItem('token',res.data.token);

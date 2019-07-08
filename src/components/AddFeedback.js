@@ -8,8 +8,9 @@ class AddFeedback extends Component {
             receiversList: []
         }
         this.submitFeedback = this.submitFeedback.bind(this);
+        this.getReceivers = this.getReceivers.bind(this);
     }
-    componentWillMount(){
+    getReceivers(){
         axios.get('http://10.0.100.226:3001/receiver', { headers: { Authorization: localStorage.getItem('token') } })
         .then(res => {
             this.setState({
@@ -20,6 +21,11 @@ class AddFeedback extends Component {
             alert('error ' + error);
         });
     }
+
+    componentWillMount(){
+        this.getReceivers();
+    }
+
     submitFeedback(e){
         var index = e.target.getAttribute('attr');
         var receiverId = e.target.getAttribute('receiver_id');
@@ -34,9 +40,13 @@ class AddFeedback extends Component {
             feedback: feedbackValue,
             receiver_id: receiverId
         }
-        axios.post('http://10.0.100.226:3001/feedbacksave', data, { headers: { Authorization: localStorage.getItem('token') } })
+        axios.post(process.env.REACT_APP_API_KEY+'/feedbacksave', data, { headers: { Authorization: localStorage.getItem('token') } })
         .then(res => {
             alert('Feedback Saved!!');
+            this.setState({
+                receiversList: []
+            });
+            this.getReceivers();
         })
         .catch((error) => {
             alert('error ' + error);
@@ -57,7 +67,7 @@ class AddFeedback extends Component {
                                     <form key={i} method="post">
                                         <div className="box-body">
                                             <div className="form-group">
-                                                <img className="img-user" src={"http://10.0.100.226:3001/"+receiver.profile_photo}/>&nbsp;&nbsp;
+                                                <img className="img-user" src={process.env.REACT_APP_API_KEY+'/'+receiver.profile_photo}/>&nbsp;&nbsp;
                                                 <span><b className="user_name">{receiver.name}</b></span>
                                             </div>
                                             <div className="form-group">

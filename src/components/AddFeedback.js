@@ -1,44 +1,45 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import axios from 'axios';  
 
 class AddFeedback extends Component {
     constructor(){
         super();
         this.state = {
-            receivers_list: []
+            receiversList: []
         }
         this.submitFeedback = this.submitFeedback.bind(this);
     }
     componentWillMount(){
         axios.get('http://10.0.100.226:3001/receiver', { headers: { Authorization: localStorage.getItem('token') } })
         .then(res => {
-            console.log(res.data.list);
             this.setState({
-                receivers_list: res.data.list
+                receiversList: res.data.list
             });
         })
         .catch((error) => {
-            console.log('error ' + error);
+            alert('error ' + error);
         });
     }
     submitFeedback(e){
         var index = e.target.getAttribute('attr');
         var receiverId = e.target.getAttribute('receiver_id');
-        var feedbackValue = document.getElementById('feedback'+index).value;
+        var feedbackElement = document.getElementById('feedback'+index);
+        var feedbackValue = feedbackElement.value;
         if(!feedbackValue.trim()){
             alert('First enter feedback for user before submit');
+            feedbackElement.focus();
+            return false;
         }
         var data = {
             feedback: feedbackValue,
             receiver_id: receiverId
         }
-        console.log(data);
-        axios.post('http://10.0.100.226:3001/feedbacksave', { headers: { Authorization: localStorage.getItem('token') }, data })
+        axios.post('http://10.0.100.226:3001/feedbacksave', data, { headers: { Authorization: localStorage.getItem('token') } })
         .then(res => {
-            console.log(res);
+            alert('Feedback Saved!!');
         })
         .catch((error) => {
-            console.log('error ' + error);
+            alert('error ' + error);
         });
     }
 
@@ -52,7 +53,7 @@ class AddFeedback extends Component {
                                 <div className="box-header with-border">
                                     <h3 className="box-title">Add Feedback</h3>
                                 </div>
-                                {this.state.receivers_list.map((receiver,i) => (
+                                {this.state.receiversList.map((receiver,i) => (
                                     <form key={i} method="post">
                                         <div className="box-body">
                                             <div className="form-group">

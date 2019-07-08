@@ -52,7 +52,6 @@ class Login extends Component {
         
         axios.post('http://10.0.100.226:3001/login',  login_details )
         .then(res => {
-            console.log(res);
             if(res.data.status_code === 200) {
                 localStorage.setItem('token',res.data.token);
                 localStorage.setItem('loggedin',true);

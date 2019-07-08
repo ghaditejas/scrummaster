@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 class Dashboard extends Component {
     render() {
+        console.log(this.props.feedback);
         return(
             <div className="content-wrapper">
                 <section className="content-header">
@@ -15,8 +17,8 @@ class Dashboard extends Component {
                             <div key={i} className="col-sm-4">
                                 <div className="small-box bg-aqua">
                                     <div className="inner">
-                                        <h3></h3>
                                         <p className="static-box-size">{feedbackDetails.feedback}</p>
+                                        <span className="time-footer">- {moment(feedbackDetails.created_at).fromNow()}</span>
                                     </div>
                                 </div>
                             </div>

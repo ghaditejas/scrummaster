@@ -6,7 +6,7 @@ class Header extends Component {
     constructor(props){
         super(props);
         this.state = {
-            user_details: ''
+            userDetails: ''
         }
         this.UserLogout = this.UserLogout.bind(this);
     }
@@ -16,16 +16,14 @@ class Header extends Component {
     componentWillMount(){   
 
         if(localStorage.getItem('loggedin') !== null){
-            console.log('here');
             axios.get('http://10.0.100.226:3001/dashboard', { headers: { Authorization: localStorage.getItem('token') } }).then(res => {
                 this.setState({
-                    user_details: res.data.data[0]
+                    userDetails: res.data.data[0]
                 });
                 this.props.action(res.data.feedback);
-                console.log(this.state);
             })
             .catch((error) => {
-                console.log('error ' + error);
+                alert('error ' + error);
             });
         }
 
@@ -42,7 +40,7 @@ class Header extends Component {
                         <ul className="nav navbar-nav">
                             <li className="dropdown user user-menu">
                                 <a href="javascript:void(0)" className="dropdown-toggle" data-toggle="dropdown">
-                                    <span className="hidden-xs">{this.state.user_details.name}</span>
+                                    <span className="hidden-xs">{this.state.userDetails.name}</span>
                                 </a>
                             </li>
                             <li className="pull-right">
@@ -56,10 +54,10 @@ class Header extends Component {
                 <section className="sidebar">
                     <div className="user-panel">
                         <div className="pull-left image">
-                            <img src={"http://10.0.100.226:3001/"+this.state.user_details.profile_photo} className="img-circle" alt="Image" />
+                            <img src={"http://10.0.100.226:3001/"+this.state.userDetails.profile_photo} className="img-circle" alt="Image" />
                         </div>
                         <div className="pull-left info">
-                            <p>{this.state.user_details.name}</p>
+                            <p>{this.state.userDetails.name}</p>
                         </div>
                     </div>
                     <ul className="sidebar-menu">

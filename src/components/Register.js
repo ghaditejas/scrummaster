@@ -26,7 +26,7 @@ class Register extends Component {
     constructor(){
         super();
         this.state = {
-            email_id:'',
+            emailId:'',
             name:'',
             selectedFile: '',
             error: false,
@@ -60,7 +60,7 @@ class Register extends Component {
         let formData = new FormData();
         formData.append('profile_photo', this.state.selectedFile);
         formData.append('name', this.state.name);
-        formData.append('email_id', this.state.email_id);
+        formData.append('email_id', this.state.emailId);
         
         axios.post('http://10.0.100.226:3001/users',  formData )
         .then(res => {
@@ -93,7 +93,7 @@ class Register extends Component {
                             {(this.state.error) && <p className="error">Something went wrong.</p>}
                             <div className="form-group has-feedback">
                                 <label>Email</label>
-                                <Input type="email" name="email_id" className="form-control" placeholder="Email*" value={this.state.email_id} onChange={this.inputChangeHandler} validations={[required, email]}/>
+                                <Input type="email" name="emailId" className="form-control" placeholder="Email*" value={this.state.emailId} onChange={this.inputChangeHandler} validations={[required, email]}/>
                                 <span className="glyphicon glyphicon-envelope form-control-feedback"></span>
                             </div>
                             <div className="form-group has-feedback">
